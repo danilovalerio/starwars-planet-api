@@ -3,6 +3,7 @@ package com.danilo.learn.starwarsplanetapi.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,11 @@ public class PlanetController {
         Planet planetCreated = planetService.create(planet);
         return ResponseEntity.status(HttpStatus.CREATED).body(planetCreated);
 
+    }
+
+    @GetMapping
+    public ResponseEntity<String> get() {
+        return ResponseEntity.status(HttpStatus.CREATED).body("Olá");
     }
 
 }
