@@ -4,19 +4,25 @@ import static org.mockito.Mockito.when;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.danilo.learn.starwarsplanetapi.common.PlanetConstants;
 
-@SpringBootTest(classes = PlanetService.class) // monta o contexto do spring apenas com a classe adicionada e deixa
-                                               // disponível para injecao
+//@SpringBootTest(classes = PlanetService.class) // monta o contexto do spring apenas com a classe adicionada e deixa disponível para injecao
+@ExtendWith(MockitoExtension.class)
 public class PlanetServiceTest {
-    @Autowired
+    // @Autowired
+    @InjectMocks // instancia o planetservice e injeta dependencias com mock
     private PlanetService planetService;
 
-    @MockBean
+    // @MockBean
+    @Mock
     private PlanetRepository planetRepository;
 
     // operacao_estado_retorno
