@@ -38,7 +38,7 @@ public class PlanetServiceTest {
         Assertions.assertThat(sut).isEqualTo(PLANET);
     }
 
-    // testando cenário de erro
+    // testando cenário de erro, quando dados invalidos e quando planeta existe
     @Test
     public void createPlanet_WithInvalidData_ReturnsThrowsException(){
         when(planetRepository.save(INVALID_PLANET)).thenThrow(RuntimeException.class);
