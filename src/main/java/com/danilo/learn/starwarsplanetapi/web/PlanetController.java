@@ -33,4 +33,12 @@ public class PlanetController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/name/{name}")
+    public ResponseEntity<Planet> get(@PathVariable("name") String name) {
+        return planetService.getByName(name).map(planet -> ResponseEntity.ok(planet))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+
+
 }
