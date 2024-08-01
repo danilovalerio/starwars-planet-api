@@ -30,6 +30,8 @@ public class PlanetRepositoryTest {
 
         Planet sut = testEntityManager.find(Planet.class, planet.getId());
 
+        System.out.println(planet); // DEBUG visualiza os dados do objeto salvo
+
         assertThat(sut).isNotNull();
         assertThat(sut.getName()).isEqualTo(planet.getName());
         assertThat(sut.getClimate()).isEqualTo(planet.getClimate());
