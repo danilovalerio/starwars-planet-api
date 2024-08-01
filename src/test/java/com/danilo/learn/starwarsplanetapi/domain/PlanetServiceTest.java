@@ -2,9 +2,9 @@ package com.danilo.learn.starwarsplanetapi.domain;
 
 import static com.danilo.learn.starwarsplanetapi.common.PlanetConstants.INVALID_PLANET;
 import static com.danilo.learn.starwarsplanetapi.common.PlanetConstants.PLANET;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.Test;
@@ -113,6 +113,20 @@ public class PlanetServiceTest {
 
         assertThat(sut).isEmpty();
 
+    }
+
+    @Test
+    public void removePlanet_WithExistingId_ReturnsNothingException() {
+        //Método estático para executar o código e verificar
+        assertThatCode(() -> planetService.remove(1L)).doesNotThrowAnyException();
+    }
+
+    @Test
+    public void removePlanet_WithExistingId_ReturnsThrowsException() {
+        //STUB doThrow: Pois o método é void então a gente prepara a exceção que será lançada
+        doThrow(new RuntimeException()).when(planetRepository).deleteById(99L);
+
+        assertThatThrownBy(() -> planetService.remove(99L)).isInstanceOf(RuntimeException.class);
     }
 
 }
