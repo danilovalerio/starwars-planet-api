@@ -31,4 +31,8 @@ public class PlanetService {
         return planetRepository.findAll(query);
     }
 
+    public void remove(Long id) {
+        planetRepository.deleteById(id);
+    }
+
 }
