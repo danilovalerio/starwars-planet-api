@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import static com.danilo.learn.starwarsplanetapi.common.PlanetConstants.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
  * @DataJpaTest - cria o banco de dados H2 (banco de teste em memória) para testarmos as funcionalidades do repostory
@@ -36,5 +37,18 @@ public class PlanetRepositoryTest {
         assertThat(sut.getName()).isEqualTo(planet.getName());
         assertThat(sut.getClimate()).isEqualTo(planet.getClimate());
         assertThat(sut.getTerrain()).isEqualTo(planet.getTerrain());
+    }
+
+    /**
+     * Aqui através de constraints do banco não vamos permitir dados vazios ou um planeta vazio
+     * Lançando exception
+     */
+    @Test
+    public void createPlanet_WithInvalidData_ReturnsThrowsException() {
+        Planet emptyPlanet = new Planet();
+        Planet invalidPlanet = new Planet("", "", "");
+
+        assertThatThrownBy(() -> planetRepository.save(emptyPlanet));
+        assertThatThrownBy(() ->planetRepository.save(invalidPlanet));
     }
 }
