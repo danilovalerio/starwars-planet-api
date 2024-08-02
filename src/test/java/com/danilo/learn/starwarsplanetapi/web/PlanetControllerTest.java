@@ -1,11 +1,15 @@
 package com.danilo.learn.starwarsplanetapi.web;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static com.danilo.learn.starwarsplanetapi.common.PlanetConstants.PLANET;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * @WebMvcTest - configura para testar o controlador, injeta o controlador e monta um CONTEXTO WEB para interagirmos,
@@ -17,12 +21,15 @@ public class PlanetControllerTest {
     @Autowired
     private MockMvc mockMvc; //moca contexto web
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     @Test
-    public void createPlanet_withValidData_ReturnsCreated() {
+    public void createPlanet_withValidData_ReturnsCreated() throws Exception {
         mockMvc.perform(post("/planets")
-                .contentType("application/json")
-                .content("{\"name\": \"Tatooine\", \"climate\": \"arid\", \"terrain\": \"desert\"}"))
-                .andExpect(status().isCreated());
+                .content(objectMapper.writeValueAsString(PLANET)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$").value(PLANET));
     }
 
 
