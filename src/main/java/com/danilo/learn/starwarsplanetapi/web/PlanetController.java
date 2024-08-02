@@ -24,8 +24,8 @@ public class PlanetController {
 
     }
 
-    @GetMapping
-    public ResponseEntity<String> get() {
+    @GetMapping("/message")
+    public ResponseEntity<String> getMessage() {
         return ResponseEntity.status(HttpStatus.CREATED).body("Olá");
     }
 
@@ -36,7 +36,7 @@ public class PlanetController {
     }
 
     @GetMapping("/name/{name}")
-    public ResponseEntity<Planet> get(@PathVariable("name") String name) {
+    public ResponseEntity<Planet> getByName(@PathVariable("name") String name) {
         return planetService.getByName(name).map(planet -> ResponseEntity.ok(planet))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
