@@ -1,12 +1,16 @@
 package com.danilo.learn.starwarsplanetapi.web;
 
+import com.danilo.learn.starwarsplanetapi.domain.PlanetService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static com.danilo.learn.starwarsplanetapi.common.PlanetConstants.PLANET;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -24,10 +28,17 @@ public class PlanetControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @MockBean //Injeta o mock de planetService para usarmos no test
+    private PlanetService planetService;
+
     @Test
     public void createPlanet_withValidData_ReturnsCreated() throws Exception {
-        mockMvc.perform(post("/planets")
-                .content(objectMapper.writeValueAsString(PLANET)))
+        when(planetService.create(PLANET)).thenReturn(PLANET);
+
+        mockMvc
+                .perform(post("/planets")
+                .content(objectMapper.writeValueAsString(PLANET))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$").value(PLANET));
     }
