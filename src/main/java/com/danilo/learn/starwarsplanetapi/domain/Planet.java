@@ -12,7 +12,7 @@ public class Planet {
     private Long id;
 
     @NotEmpty(message = "Name cannot be empty")
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
     @NotEmpty(message = "Climate cannot be empty")
