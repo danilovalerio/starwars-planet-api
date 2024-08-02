@@ -50,7 +50,12 @@ public class PlanetRepositoryTest {
 
         assertThatThrownBy(() -> planetRepository.save(emptyPlanet)).isInstanceOf(RuntimeException.class);
         assertThatThrownBy(() ->planetRepository.save(invalidPlanet)).isInstanceOf(RuntimeException.class);;
+    }
 
+    @Test
+    public void createPlanet_WithExistingName_ReturnsThrowsException() {
+        planetRepository.save(PLANET);
 
+        assertThatThrownBy(() -> planetRepository.save(PLANET));
     }
 }
