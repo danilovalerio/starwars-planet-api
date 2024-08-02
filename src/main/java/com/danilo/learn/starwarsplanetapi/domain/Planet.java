@@ -1,6 +1,7 @@
 package com.danilo.learn.starwarsplanetapi.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
 @Entity
@@ -10,12 +11,15 @@ public class Planet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty(message = "Name cannot be empty")
     @Column(nullable = false)
     private String name;
 
+    @NotEmpty(message = "Climate cannot be empty")
     @Column(nullable = false)
     private String climate;
 
+    @NotEmpty(message = "Terrain cannot be empty")
     @Column(nullable = false)
     private String terrain;
 
