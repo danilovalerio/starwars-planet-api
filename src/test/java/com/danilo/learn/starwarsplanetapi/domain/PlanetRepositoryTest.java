@@ -56,6 +56,7 @@ public class PlanetRepositoryTest {
     public void createPlanet_WithExistingName_ReturnsThrowsException() {
         //prepara as dados para teste, persistFlushFind salva o planeta no banco, busca e retorna ele
         Planet planet = testEntityManager.persistFlushFind(PLANET);
+        testEntityManager.detach(planet); //detach desconecta o objeto do entityManager, assim não é mais gerenciado,
         planet.setId(null); //limpa o id para poder inserir um novo planeta de mesmo nome
 
         assertThatThrownBy(() -> planetRepository.save(planet));
