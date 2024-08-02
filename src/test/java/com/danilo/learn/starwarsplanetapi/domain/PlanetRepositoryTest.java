@@ -1,6 +1,5 @@
 package com.danilo.learn.starwarsplanetapi.domain;
 
-import com.danilo.learn.starwarsplanetapi.common.PlanetConstants;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
