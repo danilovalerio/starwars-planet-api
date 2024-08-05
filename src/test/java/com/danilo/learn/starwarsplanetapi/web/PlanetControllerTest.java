@@ -1,5 +1,6 @@
 package com.danilo.learn.starwarsplanetapi.web;
 
+import com.danilo.learn.starwarsplanetapi.domain.Planet;
 import com.danilo.learn.starwarsplanetapi.domain.PlanetService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -41,6 +42,26 @@ public class PlanetControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$").value(PLANET));
+    }
+
+    @Test
+    public void createPlanet_withInvalidData_ReturnsBadRequest() throws Exception {
+
+        Planet emptyPlanet = new Planet();
+        Planet invalidPlanet = new Planet("", "", "");
+
+        mockMvc
+                .perform(post("/planets")
+                .content(objectMapper.writeValueAsString(emptyPlanet))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnprocessableEntity());
+
+        mockMvc
+                .perform(post("/planets")
+                        .content(objectMapper.writeValueAsString(invalidPlanet))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnprocessableEntity());
+
     }
 
 
