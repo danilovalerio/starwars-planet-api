@@ -7,10 +7,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static com.danilo.learn.starwarsplanetapi.common.PlanetConstants.PLANET;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -64,5 +66,15 @@ public class PlanetControllerTest {
 
     }
 
+    @Test
+    public void createPlanet_withExistingName_ReturnsConflict() throws Exception {
+        //Qualquer planeta que eu passar nesse teste no create do planet service vai lancar uma excessão
+        when(planetService.create(any())).thenThrow(DataIntegrityViolationException.class);
+        mockMvc
+                .perform(post("/planets")
+                        .content(objectMapper.writeValueAsString(PLANET))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isConflict());
+    }
 
 }
