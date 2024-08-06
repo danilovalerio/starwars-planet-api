@@ -14,7 +14,6 @@ import java.util.Optional;
 import static com.danilo.learn.starwarsplanetapi.common.PlanetConstants.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
 /**
  * @DataJpaTest - cria o banco de dados H2 (banco de teste em memória) para testarmos as funcionalidades do repostory
  * @TestEntityManager - cria o entityManager para termos acesso ao repository sem usar a classe alvo de teste (PlanetRepository)
@@ -59,7 +58,7 @@ public class PlanetRepositoryTest {
         Planet invalidPlanet = new Planet("", "", "");
 
         assertThatThrownBy(() -> planetRepository.save(emptyPlanet)).isInstanceOf(RuntimeException.class);
-        assertThatThrownBy(() ->planetRepository.save(invalidPlanet)).isInstanceOf(RuntimeException.class);;
+        assertThatThrownBy(() ->planetRepository.save(invalidPlanet)).isInstanceOf(RuntimeException.class);
     }
 
     @Test
@@ -136,5 +135,17 @@ public class PlanetRepositoryTest {
         List<Planet> response = planetRepository.findAll(query);
 
         assertThat(response).isEmpty();
+    }
+
+    @Test
+    public void removePlanet_withExistingId_ReturnsRemovesPlanetFromDatabase() {
+
+        Planet planet = testEntityManager.persistFlushFind(PLANET);
+
+        planetRepository.deleteById(planet.getId());
+
+        Planet removedPlanet = testEntityManager.find(Planet.class, planet.getId());
+        assertThat(removedPlanet).isNull();
+
     }
 }

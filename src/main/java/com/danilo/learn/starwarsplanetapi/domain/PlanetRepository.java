@@ -3,7 +3,6 @@ package com.danilo.learn.starwarsplanetapi.domain;
 import org.springframework.data.domain.Example;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.QueryByExampleExecutor;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
