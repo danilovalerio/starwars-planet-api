@@ -1,5 +1,6 @@
 package com.danilo.learn.starwarsplanetapi.domain;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -25,6 +26,11 @@ public class PlanetRepositoryTest {
 
     @Autowired
     private TestEntityManager testEntityManager;
+
+    @AfterEach
+    public void afterEach() {
+        PLANET.setId(null);
+    }
 
     @Test
     public void createPlanet_WithValidData_ReturnsPlanet() {
@@ -66,23 +72,21 @@ public class PlanetRepositoryTest {
     @Test
     public void getPlanet_byExistingId_ReturnsPlanet() throws Exception {
         Planet planet = testEntityManager.persistFlushFind(PLANET);
-        testEntityManager.detach(planet);
-        planet.setId(1L);
+        //testEntityManager.detach(planet);
+        //planet.setId(1L);
 
-        Planet planetLocalized = planetRepository.findById(1L).get();
+        Optional<Planet> planetLocalized = planetRepository.findById(planet.getId());
 
         assertThat(planetLocalized).isNotNull();
-        assertThat(planetLocalized.getName()).isEqualTo(planet.getName());
-        assertThat(planetLocalized.getClimate()).isEqualTo(planet.getClimate());
-        assertThat(planetLocalized.getTerrain()).isEqualTo(planet.getTerrain());
+        assertThat(planetLocalized.get()).isEqualTo(planet);
 
     }
 
     @Test
     public void getPlanet_byUnexistingId_ReturnsEmpty() throws Exception {
-        Planet planetLocalized = planetRepository.findById(1L).get();
+        Optional<Planet> planetLocalized = planetRepository.findById(1L);
 
-        assertThat(planetLocalized).isEqualTo(Optional.empty());
+        assertThat(planetLocalized).isEmpty();
 
     }
 }
