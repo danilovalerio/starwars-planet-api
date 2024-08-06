@@ -89,4 +89,23 @@ public class PlanetRepositoryTest {
         assertThat(planetLocalized).isEmpty();
 
     }
+
+    @Test
+    public void getPlanet_byExistingName_ReturnsPlanet() throws Exception {
+        Planet planet = testEntityManager.persistFlushFind(PLANET);
+
+        Optional<Planet> planetLocalized = planetRepository.findByName(planet.getName());
+
+        assertThat(planetLocalized).isNotNull();
+        assertThat(planetLocalized.get()).isEqualTo(planet);
+
+    }
+
+    @Test
+    public void getPlanet_byUnexistingName_ReturnsEmpty() throws Exception {
+        Optional<Planet> planetLocalized = planetRepository.findByName("Unexisting Name");
+
+        assertThat(planetLocalized).isEmpty();
+
+    }
 }
