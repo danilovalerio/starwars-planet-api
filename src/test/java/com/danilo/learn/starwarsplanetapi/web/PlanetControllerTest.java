@@ -3,7 +3,6 @@ package com.danilo.learn.starwarsplanetapi.web;
 import com.danilo.learn.starwarsplanetapi.domain.Planet;
 import com.danilo.learn.starwarsplanetapi.domain.PlanetService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.h2.table.Plan;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -92,6 +91,20 @@ public class PlanetControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").value(planetComId));
+    }
+
+    @Test
+    public void getPlanet_byUnexistingId_ReturnsNotFound() throws Exception {
+        Planet planetComId = new Planet( "name", "climate", "terrain");
+        planetComId.setId(1L);
+
+        when(planetService.get(any())).thenReturn(java.util.Optional.empty());
+
+        mockMvc
+                .perform(get("/planets/1")
+                        .content(objectMapper.writeValueAsString(planetComId))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 
 }
