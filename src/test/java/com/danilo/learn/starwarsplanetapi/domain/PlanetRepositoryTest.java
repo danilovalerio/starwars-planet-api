@@ -5,7 +5,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.data.domain.Example;
+import org.springframework.test.context.jdbc.Sql;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.danilo.learn.starwarsplanetapi.common.PlanetConstants.*;
@@ -107,5 +110,31 @@ public class PlanetRepositoryTest {
 
         assertThat(planetLocalized).isEmpty();
 
+    }
+
+    @Sql(scripts = "/import_planets.sql")
+    @Test
+    public void listPlanets_ReturnsFilteredPlanets() throws Exception {
+        Example<Planet> queryWithoutFilters = QueryBuilder.makeQuery(new Planet());
+        Example<Planet> queryWithFilters = QueryBuilder.makeQuery(new Planet(TATOOINE.getClimate(), TATOOINE.getTerrain()));
+
+        List<Planet> responseWithoutFilters = planetRepository.findAll(queryWithoutFilters);
+        List<Planet> responseWithFilters = planetRepository.findAll(queryWithFilters);
+
+        assertThat(responseWithoutFilters).isNotEmpty();
+        assertThat(responseWithoutFilters).hasSize(3);
+
+        assertThat(responseWithFilters).isNotEmpty();
+        assertThat(responseWithFilters).hasSize(1);
+        assertThat(responseWithFilters.get(0)).isEqualTo(TATOOINE);
+    }
+
+    @Test
+    public void listPlanets_ReturnsNoPlanets() throws Exception {
+        Example<Planet> query = QueryBuilder.makeQuery(new Planet());
+
+        List<Planet> response = planetRepository.findAll(query);
+
+        assertThat(response).isEmpty();
     }
 }
