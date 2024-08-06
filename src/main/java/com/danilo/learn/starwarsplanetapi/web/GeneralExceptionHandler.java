@@ -28,6 +28,4 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
     private ResponseEntity<Object> handleConflict(DataIntegrityViolationException ex){
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
-
-
 }

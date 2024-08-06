@@ -3,6 +3,7 @@ package com.danilo.learn.starwarsplanetapi.web;
 import com.danilo.learn.starwarsplanetapi.domain.Planet;
 import com.danilo.learn.starwarsplanetapi.domain.PlanetService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.h2.table.Plan;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -14,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static com.danilo.learn.starwarsplanetapi.common.PlanetConstants.PLANET;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -75,6 +77,21 @@ public class PlanetControllerTest {
                         .content(objectMapper.writeValueAsString(PLANET))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isConflict());
+    }
+
+    @Test
+    public void getPlanet_byExistingId_ReturnsPlanet() throws Exception {
+        Planet planetComId = new Planet( "name", "climate", "terrain");
+        planetComId.setId(1L);
+
+        when(planetService.get(1L)).thenReturn(java.util.Optional.of(planetComId));
+
+        mockMvc
+                .perform(get("/planets")
+                        .content(objectMapper.writeValueAsString(planetComId))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").value(planetComId));
     }
 
 }
