@@ -87,7 +87,7 @@ public class PlanetControllerTest {
         when(planetService.get(1L)).thenReturn(java.util.Optional.of(planetComId));
 
         mockMvc
-                .perform(get("/planets")
+                .perform(get("/planets/1")
                         .content(objectMapper.writeValueAsString(planetComId))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
