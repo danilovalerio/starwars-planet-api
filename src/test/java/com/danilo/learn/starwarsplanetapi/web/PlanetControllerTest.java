@@ -95,9 +95,6 @@ public class PlanetControllerTest {
 
     @Test
     public void getPlanet_byUnexistingId_ReturnsNotFound() throws Exception {
-
-        when(planetService.get(any())).thenReturn(java.util.Optional.empty());
-
         mockMvc
                 .perform(get("/planets/1")
                         .contentType(MediaType.APPLICATION_JSON))
