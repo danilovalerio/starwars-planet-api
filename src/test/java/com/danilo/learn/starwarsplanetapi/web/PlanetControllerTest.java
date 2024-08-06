@@ -95,14 +95,11 @@ public class PlanetControllerTest {
 
     @Test
     public void getPlanet_byUnexistingId_ReturnsNotFound() throws Exception {
-        Planet planetComId = new Planet( "name", "climate", "terrain");
-        planetComId.setId(1L);
 
         when(planetService.get(any())).thenReturn(java.util.Optional.empty());
 
         mockMvc
                 .perform(get("/planets/1")
-                        .content(objectMapper.writeValueAsString(planetComId))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
