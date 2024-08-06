@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
+import java.util.Optional;
+
 import static com.danilo.learn.starwarsplanetapi.common.PlanetConstants.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -59,5 +61,28 @@ public class PlanetRepositoryTest {
         planet.setId(null); //limpa o id para poder inserir um novo planeta de mesmo nome
 
         assertThatThrownBy(() -> planetRepository.save(planet));
+    }
+
+    @Test
+    public void getPlanet_byExistingId_ReturnsPlanet() throws Exception {
+        Planet planet = testEntityManager.persistFlushFind(PLANET);
+        testEntityManager.detach(planet);
+        planet.setId(1L);
+
+        Planet planetLocalized = planetRepository.findById(1L).get();
+
+        assertThat(planetLocalized).isNotNull();
+        assertThat(planetLocalized.getName()).isEqualTo(planet.getName());
+        assertThat(planetLocalized.getClimate()).isEqualTo(planet.getClimate());
+        assertThat(planetLocalized.getTerrain()).isEqualTo(planet.getTerrain());
+
+    }
+
+    @Test
+    public void getPlanet_byUnexistingId_ReturnsEmpty() throws Exception {
+        Planet planetLocalized = planetRepository.findById(1L).get();
+
+        assertThat(planetLocalized).isEqualTo(Optional.empty());
+
     }
 }
