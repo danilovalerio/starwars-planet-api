@@ -11,6 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 
 import static com.danilo.learn.starwarsplanetapi.common.PlanetConstants.PLANET;
+import static com.danilo.learn.starwarsplanetapi.common.PlanetConstants.TATOOINE;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 /**
@@ -19,6 +20,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
  */
 @ActiveProfiles("it")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Sql(scripts = {"/import_planets.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @Sql(scripts = {"/remove_planets.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 public class PlanetIT {
     @Autowired
@@ -39,5 +41,15 @@ public class PlanetIT {
         assertThat(sut.getBody().getName()).isEqualTo(PLANET.getName());
         assertThat(sut.getBody().getTerrain()).isEqualTo(PLANET.getTerrain());
         assertThat(sut.getBody().getClimate()).isEqualTo(PLANET.getClimate());
+    }
+
+    @Test
+    public void getPlanet_ReturnsPlanet() {
+
+        ResponseEntity<Planet> sut = restTemplate.getForEntity("/planets/1", Planet.class);
+
+        assertThat(sut.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(sut.getBody()).isEqualTo(TATOOINE);
+
     }
 }
