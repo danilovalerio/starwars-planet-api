@@ -2,12 +2,14 @@ package com.danilo.learn.starwarsplanetapi;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 /**
- * Testes end2end e de componentes (subcutaneos)
+ * Testes Integrados end2end e de componentes (subcutaneos)
  * SpringBootTest - inicializa o contexto da aplicação para teste
  */
-@SpringBootTest()
+@ActiveProfiles("it")
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class PlanetIT {
 
     //Testa o contexto da aplicação e valida as configurações dos beans
