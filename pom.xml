@@ -81,6 +81,7 @@
 			</plugin>
 
 			<!-- Testes Integrados -->
+			<!-- mvn clean verify -DskipITs=true failsafe suporta o sufixo IT Rodar somente os testes de unidade -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>
