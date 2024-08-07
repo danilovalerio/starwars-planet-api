@@ -129,6 +129,7 @@
 			<!--
 				Pitest - Testes Mutantes
 				Rodando com junit 5 por isso a dependencia abaixo
+				mvn test-compile org.pitest:pitest-maven:mutationCoverage (para rodar)
 
 			-->
 
@@ -148,6 +149,9 @@
 					<targetTests>
 						<param>com.danilo.learn.starwarsplanetapi.*Test</param>
 					</targetTests>
+					<excludedClasses>
+						<param>com/danilo/learn/starwarsplanetapi/domain/Planet</param>
+					</excludedClasses>
 				</configuration>
 			</plugin>
 		</plugins>
