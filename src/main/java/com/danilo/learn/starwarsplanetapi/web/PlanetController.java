@@ -1,5 +1,6 @@
 package com.danilo.learn.starwarsplanetapi.web;
 
+import com.danilo.learn.starwarsplanetapi.jacoco.ExcludeFromJacocoGeneratedReport;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,8 @@ public class PlanetController {
 
     }
 
+
+    @ExcludeFromJacocoGeneratedReport
     @GetMapping("/message")
     public ResponseEntity<String> getMessage() {
         return ResponseEntity.status(HttpStatus.CREATED).body("Olá");
