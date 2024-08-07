@@ -103,6 +103,11 @@
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.8.12</version>
+				<configuration>
+					<excludes>
+						<exclude>com/danilo/learn/starwarsplanetapi/StarwarsPlanetApiApplication.class</exclude>
+					</excludes>
+				</configuration>
 
 				<executions>
 					<execution>
