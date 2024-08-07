@@ -71,6 +71,7 @@
 			</plugin>
 
 			<!-- Testes Unitários -->
+			<!-- mvn clean verify -Dsurefire.skip=true (executa somente os testes de integração) -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
